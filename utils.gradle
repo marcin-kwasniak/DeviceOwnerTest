@@ -16,6 +16,10 @@ project.ext{
                                     .execute([], project.rootDir)?.text?.trim()?:"0") }
     gitCommitCountBranch    = { return Short.parseShort("git rev-list --count ${gitCurrentBranch()}"
                                     .execute([], project.rootDir)?.text?.trim()?:"0")+1000 }
+    gitCommitCountBranchRed    = { return Short.parseShort("git rev-list --count ${gitCurrentBranch()}"
+            .execute([], project.rootDir)?.text?.trim()?:"0")+4000 }
+    gitCommitCountBranchBlue    = { return Short.parseShort("git rev-list --count ${gitCurrentBranch()}"
+            .execute([], project.rootDir)?.text?.trim()?:"0")+3000 }
     gitLastTag              = { return ['bash', '-c', 'git tag -l --sort=-v:refname | head -n1']
                                     .execute([], project.rootDir)?.text?.trim() ?: "0.0.0.0" }
 

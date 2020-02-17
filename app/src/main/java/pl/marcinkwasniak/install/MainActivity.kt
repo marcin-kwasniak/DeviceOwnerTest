@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             install(context = this)
         }
+        versionName.text = "Version name: ${BuildConfig.VERSION_NAME}\n" +
+                "Version code: ${BuildConfig.VERSION_CODE}"
     }
 
     override fun onResume() {
