@@ -34,19 +34,17 @@ class MainActivity : AppCompatActivity() {
         helloText.text = "Intent: ${intent?.action}"
     }
 
-
     /**
      * Command to set device owner in DeviceAdminSample class
      *
      * Adb output after install without device owner:
      *
-     *
-    2020-02-17 19:27:23.686 3593-5277/? I/PersonaServiceHelper: isCallerApprovedToInstall(uid:10394 userHandle:0)
-    2020-02-17 19:27:23.687 3593-5277/? I/PersonaServiceHelper: DO is not enabled. no Knox app install enforcement
-    2020-02-17 19:27:23.687 3593-5277/? I/PackageInstaller:  getting through the check android.content.pm.PackageInstaller$SessionParams@ae6dc62 user id 0
-    2020-02-17 19:27:23.687 3593-5277/? I/PackageInstaller: UserManager.DISALLOW_NON_MARKET_APP_BY_KNOX : false
-    2020-02-17 19:27:23.891 3593-5277/? D/PackageInstaller: InstallLogger: PackageInstallerSession(): createInstallTimeInfo(753728782)
-    2020-02-17 19:27:24.124 3593-3691/? I/ActivityManager: START u0 {act=pl.marcinkwasniak.install.APK_INSTALLATION_ACTION typ=null flg=0x0 cmp=ComponentInfo{pl.marcinkwasniak.install/pl.marcinkwasniak.install.MainActivity}} from uid 10394
+     * I/PersonaServiceHelper: isCallerApprovedToInstall(uid:10394 userHandle:0)
+     * I/PersonaServiceHelper: DO is not enabled. no Knox app install enforcement
+     * I/PackageInstaller:  getting through the check android.content.pm.PackageInstaller$SessionParams@ae6dc62 user id 0
+     * I/PackageInstaller: UserManager.DISALLOW_NON_MARKET_APP_BY_KNOX : false
+     * D/PackageInstaller: InstallLogger: PackageInstallerSession(): createInstallTimeInfo(753728782)
+     * I/ActivityManager: START u0 {act=pl.marcinkwasniak.install.APK_INSTALLATION_ACTION typ=null flg=0x0 cmp=ComponentInfo{pl.marcinkwasniak.install/pl.marcinkwasniak.install.MainActivity}} from uid 10394
      */
     private fun install(context: Context) {
 

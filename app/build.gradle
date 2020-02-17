@@ -1,23 +1,53 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'nu.studer.credentials'
+apply from: "./../utils.gradle"
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+
+    compileSdkVersion compileSdk
+    buildToolsVersion buildTools
+
+    android {
+        compileOptions {
+            sourceCompatibility 1.8
+            targetCompatibility 1.8
+        }
+    }
+
     defaultConfig {
         applicationId "pl.marcinkwasniak.install"
-        minSdkVersion 23
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode gitCommitCountBranch() // Version code: number of commits + 1000
+        versionName gitLastTag() // Version name from tag
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Set application file name (both apk and aab bundle):
+        setProperty("archivesBaseName", "install-test-app" + versionName + "(" + versionCode + ")")
+    }
+    signingConfigs {
+        // 1. Option with encrypted local credentials
+        //    we need to run /keys/addCredentials.bat or /keys/addCredentials.sh in new machine
+        // 2. Alternatively we could use system variables here (e.g. from CI chain)
+        //    System.getenv("my-key-variable")
+        release {
+            storeFile file("../keys/TestRelease.keystore")
+            storePassword credentials.installAppKeyStore
+            keyAlias credentials.installAppKeyStoreAlias
+            keyPassword credentials.installAppKey
+        }
     }
     buildTypes {
-        release {
+        debug {
+            signingConfig signingConfigs.release
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -25,7 +55,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

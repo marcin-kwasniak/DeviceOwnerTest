@@ -1,0 +1,57 @@
+// KOTLIN
+
+dependencies.ext{
+    addDependencies = { String method, Map deps ->
+        deps.each {
+            def dependency = isCollectionOrArray(it.value) ? it.value[0] : it.value
+            def config =  isCollectionOrArray(it.value) ? (it.value[1] ?: {}) : {}
+            dependencies.add(method, dependency, config)
+        }
+    }
+}
+
+project.ext{
+
+    gitCommitCount          = { return Short.parseShort("git rev-list --all --count"
+                                    .execute([], project.rootDir)?.text?.trim()?:"0") }
+    gitCommitCountBranch    = { return Short.parseShort("git rev-list --count ${gitCurrentBranch()}"
+                                    .execute([], project.rootDir)?.text?.trim()?:"0")+1000 }
+    gitLastTag              = { return ['bash', '-c', 'git tag -l --sort=-v:refname | head -n1']
+                                    .execute([], project.rootDir)?.text?.trim() ?: "0.0.0.0" }
+
+    getTime                 = { return new Date().toString()}
+    getTimestamp            = { return System.currentTimeMillis() }
+
+    getProductVersion       = { return getVersion(0) }
+    getBreakingVersion      = { return getVersion(1) }
+    getFeatureVersion       = { return getVersion(2) }
+    getBugfixVersion        = { return getVersion(3) }
+
+    gitCommitCountSuffix    = { return "("+ gitCommitCount().toString() +")" }
+}
+
+// Groovy
+static boolean isCollectionOrArray(object) {
+    [Collection, Object[]].any { it.isAssignableFrom(object.getClass()) }
+}
+
+@SuppressWarnings("GrMethodMayBeStatic")
+private short getVersion(position){
+    try {
+        def digits = android.defaultConfig.versionName.replaceAll("[^\\d.]", "")
+        if (!digits.contains('.'))
+            return 0
+        def minor = digits.tokenize('.')[position]
+        return Short.parseShort(minor)
+    } catch(Exception e){
+        return Short.parseShort("0")
+    }
+}
+
+private String gitCurrentBranch(){
+    return ['bash', '-c', 'git rev-parse --abbrev-ref HEAD'].execute([], project.rootDir)?.text?.trim()?:"master"
+}
+
+private short gitCommitCountBranch(){
+    return Short.parseShort("git rev-list --count ${gitCurrentBranch()}".execute([], project.rootDir)?.text?.trim()?:"0")+1000
+}
