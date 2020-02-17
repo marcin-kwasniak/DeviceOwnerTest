@@ -16,6 +16,18 @@ android {
         }
     }
 
+    flavorDimensions "pokemon"
+    productFlavors {
+        red {
+            dimension "pokemon"
+            versionNameSuffix "-red"
+        }
+        blue {
+            dimension "pokemon"
+            versionNameSuffix "-blue"
+        }
+    }
+
     defaultConfig {
         applicationId "pl.marcinkwasniak.install"
         minSdkVersion minSdk
