@@ -1,6 +1,7 @@
 # Built application files
 *.apk
 *.ap_
+!app/src/main/res/raw/kotlintest.apk
 
 # Files for the dex VM
 *.dex
